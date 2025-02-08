@@ -1,0 +1,111 @@
+import React from "react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
+
+export default function RecruitmentPage() {
+  const [form, setForm] = useState({ name: "", email: "", role: "", message: "" });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert(`Thank you, ${form.name}. We will review your application for the ${form.role} role.`);
+    setForm({ name: "", email: "", role: "", message: "" });
+  };
+
+  const roles = [
+    "Community Engagement Manager",
+    "Reputation & Crisis Manager",
+    "Direct Message Manager",
+    "Content & Publishing Manager",
+    "Trends & Insights Monitor",
+    "Technical & Automation Manager",
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
+      <Card className="w-full max-w-4xl p-6 bg-white shadow-lg">
+        <CardHeader>
+          <h1 className="text-2xl font-bold text-center">Join the Lions of Zion Team</h1>
+          <p className="text-gray-600 text-center mt-2">
+            We are looking for dedicated individuals to help manage and grow our Twitter presence. Check out the roles below and apply now!
+          </p>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            {roles.map((role, index) => (
+              <div key={index} className="p-4 border rounded-lg bg-gray-50 shadow-sm">
+                <h3 className="font-semibold text-lg">{role}</h3>
+                <p className="text-gray-600 text-sm mt-2">
+                  {role === "Community Engagement Manager" &&
+                    "Engage with our audience by responding to tweets and fostering discussions."}
+                  {role === "Reputation & Crisis Manager" &&
+                    "Monitor and respond to hostile comments while safeguarding our image."}
+                  {role === "Direct Message Manager" &&
+                    "Manage incoming private messages and maintain personal connections with supporters."}
+                  {role === "Content & Publishing Manager" &&
+                    "Create and schedule content to enhance our Twitter presence and manage exclusive content."}
+                  {role === "Trends & Insights Monitor" &&
+                    "Track trends and ensure our voice is part of the relevant conversations."}
+                  {role === "Technical & Automation Manager" &&
+                    "Optimize workflows with automation and analytics tools."}
+                </p>
+              </div>
+            ))}
+          </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <Input
+              name="name"
+              placeholder="Your Full Name"
+              value={form.name}
+              onChange={handleChange}
+              className="w-full border rounded-lg p-2"
+              required
+            />
+            <Input
+              type="email"
+              name="email"
+              placeholder="Your Email"
+              value={form.email}
+              onChange={handleChange}
+              className="w-full border rounded-lg p-2"
+              required
+            />
+            <select
+              name="role"
+              value={form.role}
+              onChange={handleChange}
+              className="w-full border rounded-lg p-2"
+              required
+            >
+              <option value="">Select a Role</option>
+              {roles.map((role, index) => (
+                <option key={index} value={role}>
+                  {role}
+                </option>
+              ))}
+            </select>
+            <Textarea
+              name="message"
+              placeholder="Tell us why you're a great fit for this role"
+              value={form.message}
+              onChange={handleChange}
+              className="w-full border rounded-lg p-2"
+              rows={4}
+              required
+            />
+            <Button type="submit" className="w-full bg-blue-600 text-white rounded-lg p-2 hover:bg-blue-700">
+              Submit Application
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
