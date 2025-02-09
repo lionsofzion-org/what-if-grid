@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lions of Zion - Advanced Tabbed Repository</title>
+  
+  <!-- SEO & Open Graph -->
+  <meta name="description" content="Lions of Zion - Empowering Our Pride Worldwide with inspiring posts, action calls, and powerful messages." />
+  <meta name="keywords" content="Lions of Zion, Inspiration, Success, Israel, Community, Empowerment" />
+  <meta property="og:title" content="Lions of Zion - Empowering Our Pride Worldwide" />
+  <meta property="og:description" content="Join us in empowering our community with inspiring posts, heroic moments, and calls to action." />
+  <meta property="og:image" content="https://example.com/og-image.jpg" />
+  <meta property="og:url" content="https://example.com" />
+  <meta name="twitter:card" content="summary_large_image" />
+  
+  <!-- Favicon & Manifest -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#000000" />
+  
+  <!-- Google Fonts & Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha512-SdCly4KqAPpN9eZs2JD2nyibIha6AgmRg9z2/GRiN6zx5Nx67O9d6ja51xd2ynRM4EmMgiLOJv2zRXY9kKZwBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <style>
+    /* CSS Variables for theming */
+    :root {
+      --primary-bg: #101010;
+      --secondary-bg: #000000;
+      --primary-color: #fff;
+      --accent-gold: #ffd700;
+      --accent-darkgold: #b8860b;
+      --accent-orange: #ffa500;
+      --accent-lightblue: #66ccff;
+      --accent-blue: #3399ff;
+      --translucent-gold: rgba(255, 204, 0, 0.08);
+      --shadow-light: rgba(255, 204, 0, 0.3);
+      --shadow-medium: rgba(255, 204, 0, 0.5);
+      --shadow-strong: rgba(255, 204, 0, 0.7);
+    }
+    
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(circle at center, var(--primary-bg) 20%, var(--secondary-bg) 90%);
+      color: var(--primary-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-attachment: fixed;
+    }
+    button:focus {
+      outline: 2px solid var(--accent-gold);
+      outline-offset: 2px;
+    }
+    
+    /* Spinner for lazy loading */
+    .spinner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 1rem 0;
+      font-size: 1rem;
+      color: var(--accent-gold);
+    }
+    
+    /* Toast styling */
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+    .toast {
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 0.8rem 1rem;
+      margin-top: 0.5rem;
+      border-radius: 5px;
+      opacity: 0;
+      animation: fadeInOut 3s forwards;
+    }
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateY(20px); }
+      10% { opacity: 1; transform: translateY(0); }
+      90% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(20px); }
+    }
+    
+    /* Header */
+    header {
+      width: 100%;
+      text-align: center;
+      position: relative;
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-darkgold));
+      padding: 3rem 1rem 4rem;
+      clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+      box-shadow: 0 4px 20px var(--shadow-light);
+      z-index: 1;
+    }
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    .header-content h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 0.5rem;
+      letter-spacing: 1px;
+    }
+    .header-content p {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #333;
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      width: 90%;
+      max-width: 1200px;
+      transform: translateY(-2rem);
+      z-index: 3;
+    }
+    .tab-btn {
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-darkgold));
+      color: #000;
+      border: none;
+      padding: 0.5rem 0.75rem;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 10px var(--shadow-light);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      animation: floaty 3s ease-in-out infinite;
+    }
+    @keyframes floaty {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+      100% { transform: translateY(0); }
+    }
+    .tab-btn:hover {
+      transform: translateY(-6px) scale(1.06);
+      box-shadow: 0 8px 20px var(--shadow-medium);
+      animation-play-state: paused;
+    }
+    .tab-btn.active {
+      transform: scale(1.1);
+      box-shadow: 0 8px 25px var(--shadow-strong);
+      animation-play-state: paused;
+    }
+    
+    /* Main content and tab panels */
+    main {
+      flex: 1;
+      max-width: 1200px;
+      width: 90%;
+      margin: 2rem auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .tab-content {
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+    .tab-content.show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Search bar */
+    .search-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .search-container input {
+      width: 90%;
+      max-width: 500px;
+      padding: 0.5rem;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-size: 1rem;
+    }
+    
+    /* Posts container */
+    .posts-container {
+      background: var(--translucent-gold);
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(255, 204, 0, 0.2);
+      position: relative;
+      animation: fadeIn 0.5s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .posts-container h2 {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: var(--accent-gold);
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+    }
+    
+    /* Post block */
+    .post-block {
+      background: #111;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 6px;
+      border-left: 4px solid var(--accent-orange);
+      transition: transform 0.3s;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .post-block:hover {
+      transform: translateX(6px);
+    }
+    .post {
+      font-size: 1rem;
+      line-height: 1.4;
+      margin-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(255, 204, 0, 0.4);
+      padding-bottom: 0.4rem;
+      color: var(--primary-color);
+      flex: 1 1 auto;
+    }
+    .post:last-child {
+      border-bottom: none;
+    }
+    
+    /* Copy & Share buttons */
+    .copy-button, .share-button {
+      border: none;
+      padding: 0.4rem 0.8rem;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .copy-button {
+      background: linear-gradient(135deg, var(--accent-orange), var(--accent-gold));
+      color: #000;
+    }
+    .copy-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 3px 8px rgba(255, 204, 0, 0.4);
+    }
+    .share-button {
+      background: linear-gradient(135deg, var(--accent-lightblue), var(--accent-blue));
+      color: #000;
+    }
+    .share-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 3px 8px rgba(51, 153, 255, 0.4);
+    }
+    
+    /* Sentinel for lazy loading */
+    .sentinel {
+      height: 1px;
+    }
+    
+    /* Footer */
+    footer {
+      background: #111;
+      color: #ccc;
+      font-size: 0.85rem;
+      padding: 1rem;
+      text-align: center;
+      width: 100%;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
+    }
+    footer p { margin: 0; }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .tab-btn { font-size: 0.75rem; padding: 0.4rem 0.6rem; }
+      .header-content h1 { font-size: 1.6rem; }
+    }
+  </style>
+  
+  <!-- Google Analytics (placeholder ID) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXX-X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-XXXXXX-X');
+  </script>
+</head>
+<body>
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+  
+  <!-- Header -->
+  <header role="banner">
+    <div class="header-content">
+      <h1>Lions of Zion</h1>
+      <p>Empowering Our Pride Worldwide</p>
+    </div>
+  </header>
+  
+  <!-- Tabs -->
+  <div class="tabs" id="tabsContainer"></div>
+  
+  <!-- Main Content Area -->
+  <main id="mainContent"></main>
+  
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <p>© 2025 Lions of Zion - Roaring Through 100 Unique Posts in Each Category</p>
+  </footer>
+  
+  <script>
+    /********************
+     * UTILITIES *
+     ********************/
+    // Toast notification function
+    function showToast(message) {
+      const toastContainer = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      toastContainer.appendChild(toast);
+      setTimeout(() => { toast.remove(); }, 3000);
+    }
+    
+    // Check for IntersectionObserver support
+    const supportsIntersectionObserver = 'IntersectionObserver' in window;
+    
+    /********************
+     * DATA & GENERATION *
+     ********************/
+    const categories = {
+      success: "Success & Inspiration",
+      call: "Call to Action",
+      data: "Empowering Facts",
+      motivation: "Daily Motivation",
+      discussion: "Discussion Topics",
+      quotes: "Inspiring Quotes",
+      community: "Community Highlights",
+      history: "Heritage & History",
+      faith: "Faith & Triumph",
+      personal: "Personal Stories",
+      gratitude: "Gratitude Messages",
+      engagement: "Engagement Boosters",
+      hero: "Heroic Moments",
+      action: "Additional Action",
+      data2: "Updated Data",
+      motivation2: "Extra Motivation",
+      discussion2: "More Questions",
+      quotes2: "More Quotes",
+      community2: "Extended Community",
+      history2: "Additional History"
+    };
+    
+    // Generate unique post content
+    function generateUniquePostLines(categoryKey, index) {
+      const baseTitle = categories[categoryKey] || 'Misc';
+      const phrases = [
+        "Never underestimate your own potential.",
+        "Stand strong and roar with confidence.",
+        "Reflect on your victories, learn from your defeats.",
+        "Push forward, no matter the challenge.",
+        "Believe in the power of unity.",
+        "Grow through every obstacle you face.",
+        "Small steps can lead to big changes.",
+        "Set goals that challenge you.",
+        "Your mindset defines your success.",
+        "Hope can ignite unstoppable progress.",
+        "Focus on solutions, not problems.",
+        "Let your faith guide your resilience.",
+        "Stay curious, keep evolving.",
+        "Celebrate small wins daily.",
+        "Encourage someone today—kindness spreads.",
+        "Embrace new perspectives for growth.",
+        "Perseverance is the key to breakthroughs.",
+        "Spread positivity in every step.",
+        "Let your passion fuel your journey.",
+        "Unleash your boldest ambitions."
+      ];
+      const phrase = phrases[index % phrases.length];
+      return `<p><b>${baseTitle} #${index}:</b> "${phrase}" #${categoryKey}Post${index}</p>`;
+    }
+    
+    // Build posts for each category
+    const postMap = {};
+    for (const catKey in categories) {
+      const posts = [];
+      for (let i = 1; i <= 100; i++) {
+        posts.push(generateUniquePostLines(catKey, i));
+      }
+      postMap[catKey] = posts;
+    }
+    
+    /*********************
+     * LAZY LOADING SETUP *
+     *********************/
+    const batchSize = 20; // posts per batch
+    const postsLoaded = {}; // track posts loaded per category
+    
+    let observer;
+    if (supportsIntersectionObserver) {
+      observer = new IntersectionObserver(handleIntersection, { root: null, rootMargin: '0px', threshold: 0.1 });
+    }
+    
+    function handleIntersection(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const sentinel = entry.target;
+          const catKey = sentinel.getAttribute('data-cat');
+          const postsWrap = sentinel.parentElement;
+          loadNextBatch(catKey, postsWrap, sentinel);
+        }
+      });
+    }
+    
+    function loadNextBatch(catKey, postsWrap, sentinel) {
+      // Add spinner
+      const spinner = document.createElement('div');
+      spinner.className = 'spinner';
+      spinner.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+      postsWrap.insertBefore(spinner, sentinel);
+      
+      let loaded = postsLoaded[catKey];
+      const posts = postMap[catKey];
+      const nextBatch = posts.slice(loaded, loaded + batchSize);
+      
+      nextBatch.forEach(line => {
+        const block = document.createElement('div');
+        block.className = 'post-block';
+        
+        const p = document.createElement('div');
+        p.className = 'post';
+        p.innerHTML = line;
+        
+        // Copy button with GA event
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-button';
+        copyBtn.textContent = 'Copy';
+        copyBtn.setAttribute('aria-label', 'Copy post text');
+        copyBtn.onclick = () => {
+          navigator.clipboard.writeText(p.innerText)
+            .then(() => {
+              showToast('Copied!');
+              gtag('event', 'copy', {
+                'event_category': 'Posts',
+                'event_label': p.innerText.slice(0, 20)
+              });
+            })
+            .catch(err => console.error('Copy failed', err));
+        };
+        
+        // Share button with GA event
+        const shareBtn = document.createElement('button');
+        shareBtn.className = 'share-button';
+        shareBtn.textContent = 'Share';
+        shareBtn.setAttribute('aria-label', 'Share post');
+        shareBtn.onclick = () => {
+          if (navigator.share) {
+            navigator.share({
+              title: 'Lions of Zion Post',
+              text: p.innerText,
+              url: window.location.href
+            })
+            .then(() => {
+              showToast('Shared successfully!');
+              gtag('event', 'share', {
+                'event_category': 'Posts',
+                'event_label': p.innerText.slice(0, 20)
+              });
+            })
+            .catch(error => console.error('Share failed', error));
+          } else {
+            prompt('Copy this text to share:', p.innerText);
+          }
+        };
+        
+        block.appendChild(p);
+        block.appendChild(copyBtn);
+        block.appendChild(shareBtn);
+        postsWrap.insertBefore(block, sentinel);
+      });
+      
+      spinner.remove();
+      postsLoaded[catKey] += nextBatch.length;
+      
+      if (postsLoaded[catKey] >= posts.length) {
+        if (supportsIntersectionObserver) observer.unobserve(sentinel);
+        sentinel.remove();
+      }
+    }
+    
+    // Fallback: Load all posts immediately if IntersectionObserver is not supported
+    function loadAllPosts() {
+      for (const catKey in categories) {
+        const postsWrap = document.getElementById(`posts-${catKey}`);
+        const posts = postMap[catKey];
+        posts.forEach(line => {
+          const block = document.createElement('div');
+          block.className = 'post-block';
+          const p = document.createElement('div');
+          p.className = 'post';
+          p.innerHTML = line;
+          block.appendChild(p);
+          postsWrap.appendChild(block);
+        });
+      }
+    }
+    
+    /****************************
+     * BUILD TABS & CONTENT UI *
+     ****************************/
+    const tabsContainer = document.getElementById('tabsContainer');
+    const mainContent = document.getElementById('mainContent');
+    let activeTabKey = null;
+    
+    for (const catKey in categories) {
+      // Create tab button
+      const tabBtn = document.createElement('button');
+      tabBtn.className = 'tab-btn';
+      tabBtn.id = `tab-${catKey}`;
+      tabBtn.setAttribute('role', 'tab');
+      tabBtn.setAttribute('aria-controls', `tabcontent-${catKey}`);
+      tabBtn.innerHTML = `<i class='fas fa-folder-open'></i> ${categories[catKey]}`;
+      tabBtn.onclick = () => showTab(catKey);
+      tabsContainer.appendChild(tabBtn);
+      
+      // Create tab panel
+      const tabDiv = document.createElement('div');
+      tabDiv.className = 'tab-content';
+      tabDiv.id = `tabcontent-${catKey}`;
+      tabDiv.setAttribute('role', 'tabpanel');
+      tabDiv.setAttribute('aria-labelledby', `tab-${catKey}`);
+      
+      // Add search bar
+      const searchContainer = document.createElement('div');
+      searchContainer.className = 'search-container';
+      const searchInput = document.createElement('input');
+      searchInput.type = 'text';
+      searchInput.placeholder = 'Search posts...';
+      searchInput.oninput = (e) => filterPosts(e, catKey);
+      searchContainer.appendChild(searchInput);
+      tabDiv.appendChild(searchContainer);
+      
+      // Create posts container
+      const postsWrap = document.createElement('div');
+      postsWrap.className = 'posts-container';
+      postsWrap.id = `posts-${catKey}`;
+      
+      const heading = document.createElement('h2');
+      heading.textContent = categories[catKey];
+      postsWrap.appendChild(heading);
+      
+      postsLoaded[catKey] = 0;
+      
+      // Create sentinel for lazy loading
+      const sentinel = document.createElement('div');
+      sentinel.className = 'sentinel';
+      sentinel.setAttribute('data-cat', catKey);
+      postsWrap.appendChild(sentinel);
+      
+      if (supportsIntersectionObserver) {
+        observer.observe(sentinel);
+      }
+      
+      tabDiv.appendChild(postsWrap);
+      mainContent.appendChild(tabDiv);
+    }
+    
+    // Filter posts function
+    function filterPosts(event, catKey) {
+      const query = event.target.value.toLowerCase();
+      const postsWrap = document.getElementById(`posts-${catKey}`);
+      const postBlocks = postsWrap.getElementsByClassName('post-block');
+      Array.from(postBlocks).forEach(block => {
+        const text = block.innerText.toLowerCase();
+        block.style.display = (text.indexOf(query) > -1) ? '' : 'none';
+      });
+    }
+    
+    // Show selected tab
+    function showTab(catKey) {
+      const oldBtn = tabsContainer.querySelector('.tab-btn.active');
+      if (oldBtn) {
+        oldBtn.classList.remove('active');
+        oldBtn.setAttribute('aria-selected', 'false');
+      }
+      if (activeTabKey) {
+        const oldTab = document.getElementById(`tabcontent-${activeTabKey}`);
+        if (oldTab) oldTab.classList.remove('show');
+      }
+      const newBtn = Array.from(tabsContainer.children)
+                      .find(b => b.getAttribute('aria-controls') === `tabcontent-${catKey}`);
+      if (newBtn) {
+        newBtn.classList.add('active');
+        newBtn.setAttribute('aria-selected', 'true');
+      }
+      activeTabKey = catKey;
+      const newTab = document.getElementById(`tabcontent-${catKey}`);
+      if (newTab) newTab.classList.add('show');
+    }
+    
+    // On page load, auto-open first tab and check for fallback
+    window.addEventListener('load', () => {
+      const firstKey = Object.keys(categories)[0];
+      showTab(firstKey);
+      if (!supportsIntersectionObserver) loadAllPosts();
+    });
+  </script>
+</body>
+</html>
